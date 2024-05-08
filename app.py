@@ -8,15 +8,15 @@ from flask import Flask, request, jsonify, render_template
 import pickle
 
 app = Flask(__name__)
-model = pickle.load(open("D:/template/svm_clf.pkl", "rb"))
+model = pickle.load(open("D:/MLE24templateFLASK/svm_clf.pkl", "rb"))
 
 
 # Set the template folder path
-template_folder = os.path.join("D:/", "template", "templates")
+template_folder = os.path.join("D:/", "MLE24templateFLASK", "templates")
 app.template_folder = template_folder
 
 # Set the static folder path
-static_folder = os.path.join("D:/", "template", "static")
+static_folder = os.path.join("D:/", "MLE24templateFLASK", "static")
 app.static_folder = static_folder
 
 
