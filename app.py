@@ -1,28 +1,32 @@
 import os
-import sys
-print(sys.executable)
-
 import numpy as np
-
 from flask import Flask, request, jsonify, render_template
 import pickle
+import requests
 
 app = Flask(__name__)
-model = pickle.load(open("D:/MLE24templateFLASK/svm_clf.pkl", "rb"))
 
+# Download the model file from GitHub repository
+model_url = "https://github.com/ronysaimon16/MLE24templateFLASK/raw/main/svm_clf.pkl"
+model_file = os.path.join(app.root_path, "svm_clf.pkl")
+response = requests.get(model_url)
+with open(model_file, "wb") as f:
+    f.write(response.content)
+
+# Load the model
+model = pickle.load(open(model_file, "rb"))
 
 # Set the template folder path
-template_folder = os.path.join("D:/", "MLE24templateFLASK", "templates")
-app.template_folder = template_folder
+app.template_folder = os.path.join(app.root_path, "templates")
 
 # Set the static folder path
-static_folder = os.path.join("D:/", "MLE24templateFLASK", "static")
-app.static_folder = static_folder
+app.static_folder = os.path.join(app.root_path, "static")
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -51,17 +55,8 @@ def predict():
     # Render the result template with the prediction
     return render_template('result.html', prediction=prediction)
 
+
 if __name__ == "__main__":
     # Get the port number from the environment variable PORT or use 4000 as fallback
     port = int(os.environ.get("PORT", 4000))
     app.run(host='0.0.0.0', port=port)
-
-
-
-
-
-
-
-
-
-
